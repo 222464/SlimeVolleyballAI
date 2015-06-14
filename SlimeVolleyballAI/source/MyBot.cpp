@@ -63,24 +63,10 @@ int main() {
 
 		socket.receive(packet);
 
-		// Send data
-		bool moveLeft;
-		bool moveRight;
-		bool jump;
+		float reward;
 
-		moveLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-		moveRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-		jump = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+		packet >> reward;
 
-		sf::Packet sendData;
-
-		sendData << moveLeft << moveRight << jump;
-
-		socket.send(sendData);
-
-		renderWindow.clear();
-
-		// Draw received data
 		sf::Image img;
 		img.create(width, height);
 
@@ -113,6 +99,25 @@ int main() {
 				}
 		}
 
+		// Send data
+		bool moveLeft;
+		bool moveRight;
+		bool jump;
+
+		// Your AI here
+		moveLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+		moveRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+		jump = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+
+		sf::Packet sendData;
+
+		sendData << moveLeft << moveRight << jump;
+
+		socket.send(sendData);
+
+		renderWindow.clear();
+
+		// Draw received data
 		sf::Texture t;
 
 		t.loadFromImage(img);

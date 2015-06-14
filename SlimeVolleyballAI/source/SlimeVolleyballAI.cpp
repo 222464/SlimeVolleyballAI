@@ -261,6 +261,9 @@ int main(int argc, char* argv[]) {
 		bool blueBounced = false;
 		bool redBounced = false;
 
+		float blueReward = 0.0f;
+		float redReward = 0.0f;
+
 		// Ball
 		{
 			ball._velocity.y += gravity * dt;
@@ -461,6 +464,9 @@ int main(int argc, char* argv[]) {
 				red._position.x = wallCenter.x + wallRadius + slimeRadius;
 			}
 		}
+
+		blueReward = scoreBlue - prevScoreBlue - (scoreRed - prevScoreRed);
+		redReward = scoreRed - prevScoreRed - (scoreBlue - prevScoreBlue);
 
 		prevScoreRed = scoreRed;
 		prevScoreBlue = scoreBlue;
@@ -815,6 +821,8 @@ int main(int argc, char* argv[]) {
 
 				sf::Packet blueSend;
 
+				blueSend << blueReward;
+
 				if (greyscale) {
 					for (int x = 0; x < imgBlue.getSize().x; x++) {
 						for (int y = 0; y < imgBlue.getSize().y; y++) {
@@ -835,6 +843,8 @@ int main(int argc, char* argv[]) {
 				imgRed = redRT.getTexture().copyToImage();
 
 				sf::Packet redSend;
+
+				redSend << redReward;
 
 				if (greyscale) {
 					for (int x = 0; x < imgRed.getSize().x; x++) {
